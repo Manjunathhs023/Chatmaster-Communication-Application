@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Communications Application - Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="dashboard-header">
+        <h2>Dashboard</h2>
+      </div>
+      <nav class="main-nav">
+        <button class="nav-btn active" onclick="showSection('groupchat')">
+          Group Chat
+        </button>
+        <button class="nav-btn" onclick="showSection('users')">
+          Manage Users
+        </button>
+        <button class="nav-btn" onclick="showSection('documents')">
+          Manage Documents
+        </button>
+        <button class="nav-btn" onclick="logout()">Logout</button>
+      </nav>
+
+      <!-- Group Chat Section -->
+      <div id="groupchat" class="section active">
+        <h2>Group Chat</h2>
+        <div class="chat-container">
+          <div class="chat-messages" id="chatMessages">
+            <div class="message">
+              <span class="timestamp">[2013-01-27 01:00:16]</span>
+              <span class="username">Text User:</span>
+              <span class="text">Lorem ipsum dolor sit amet,</span>
+            </div>
+          </div>
+
+          <div class="chat-input-section">
+            <div class="chat-input-container">
+              <input
+                type="text"
+                id="messageInput"
+                placeholder="Type your message..."
+              />
+              <button onclick="sendMessage()" class="btn btn-primary">
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Management Section -->
+      <div id="users" class="section">
+        <h2>Users</h2>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>User Email ID</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr>
+                <td>Text User</td>
+                <td>textuser@gmail.com</td>
+                <td>
+                  <button
+                    class="btn btn-small"
+                    onclick="editUser('textuser@gmail.com')"
+                  >
+                    Edit
+                  </button>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-small btn-danger"
+                    onclick="deleteUser('textuser@gmail.com')"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>Anne Hunter</td>
+                <td>anne.hunter@mail.com</td>
+                <td>
+                  <button
+                    class="btn btn-small"
+                    onclick="editUser('anne.hunter@mail.com')"
+                  >
+                    Edit
+                  </button>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-small btn-danger"
+                    onclick="deleteUser('anne.hunter@mail.com')"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>Jalé Boser</td>
+                <td>jale@yahoo.com</td>
+                <td>
+                  <button
+                    class="btn btn-small"
+                    onclick="editUser('jale@yahoo.com')"
+                  >
+                    Edit
+                  </button>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-small btn-danger"
+                    onclick="deleteUser('jale@yahoo.com')"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Document Management Section -->
+      <div id="documents" class="section">
+        <h2>My Uploads</h2>
+        <div class="document-tabs">
+          <button class="tab-btn active" onclick="showDocumentTab('myuploads')">
+            My Uploads
+          </button>
+          <button class="tab-btn" onclick="showDocumentTab('shareduploads')">
+            Shared Uploads
+          </button>
+        </div>
+
+        <div id="myuploads" class="document-tab active">
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Label</th>
+                  <th>File Name</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="myUploadsTableBody"></tbody>
+            </table>
+          </div>
+          <button class="btn btn-primary" onclick="showUploadForm()">
+            + Add Upload
+          </button>
+        </div>
+
+        <div id="shareduploads" class="document-tab">
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Label</th>
+                  <th>File Name</th>
+                  <th>Shared by</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sales Team Attendance Sept 2014</td>
+                  <td>Sale-Attend-Sep2014.xls</td>
+                  <td>anne.hunter@mail.com</td>
+                </tr>
+                <tr>
+                  <td>Office Rules</td>
+                  <td>OfficeRule.doc</td>
+                  <td>hr@office.com</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('editUserModal')">&times;</span>
+        <h3>Edit User Information</h3>
+        <form id="editUserForm">
+          <div class="form-group">
+            <label for="editFullName">Full Name</label>
+            <input type="text" id="editFullName" name="fullName" required />
+          </div>
+          <div class="form-group">
+            <label for="editEmail">Email</label>
+            <input type="email" id="editEmail" name="email" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Upload Document Modal -->
+    <div id="uploadModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('uploadModal')">&times;</span>
+        <h3>File Upload</h3>
+        <form id="uploadForm">
+          <div class="form-group">
+            <label for="fileInput">Choose File</label>
+            <input type="file" id="fileInput" name="file" required />
+            <div class="file-display" id="fileDisplay">Sample.doc</div>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary">Upload Now</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal('uploadModal')"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Share Document Modal -->
+    <div id="shareModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('shareModal')">&times;</span>
+        <h3>Upload Sharing</h3>
+        <div id="currentShares">
+          <h4>Current Shares</h4>
+          <div class="share-list" id="shareList">
+            <!-- Dynamic content -->
+          </div>
+        </div>
+        <div class="add-sharing">
+          <h4>Add Sharing</h4>
+          <select id="userSelect">
+            <option value="">Choose User</option>
+            <option value="jale@yahoo.com">J Bose</option>
+            <option value="hr@office.com">HR Harsh Zaveri</option>
+          </select>
+          <button class="btn btn-primary" onclick="addShare()">
+            Add Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <h3>Are you Sure?</h3>
+        <div class="modal-buttons">
+          <button class="btn btn-primary" onclick="confirmAction()">OK</button>
+          <button
+            class="btn btn-secondary"
+            onclick="closeModal('confirmModal')"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+  </body>
+</html>
